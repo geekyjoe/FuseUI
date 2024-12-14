@@ -36,7 +36,7 @@ const ProfileDropdown = ({
           <DropdownMenu.Item
             onSelect={() => onProfileClick && onProfileClick()}
             className="relative flex select-none items-center px-2 py-2 
-            rounded hover:bg-gray-100 dark:hover:bg-zinc-600 dark:hover:text-gray-50 cursor-pointer outline-none"
+            rounded hover:bg-gray-100 dark:hover:bg-neutral-600 dark:hover:text-gray-50 cursor-pointer outline-none"
           >
             <User className="mr-2 h-4 w-4" />
             Profile
@@ -45,7 +45,7 @@ const ProfileDropdown = ({
           <DropdownMenu.Item
             onSelect={() => onSettingsClick && onSettingsClick()}
             className="relative flex select-none items-center px-2 py-2 
-            rounded hover:bg-gray-100 dark:hover:bg-zinc-600 dark:hover:text-gray-50 cursor-pointer outline-none"
+            rounded hover:bg-gray-100 dark:hover:bg-neutral-600 dark:hover:text-gray-50 cursor-pointer outline-none"
           >
             <Settings className="mr-2 h-4 w-4" />
             Settings
@@ -54,7 +54,7 @@ const ProfileDropdown = ({
           <DropdownMenu.Item
             onSelect={() => onBillingClick && onBillingClick()}
             className="relative flex select-none items-center px-2 py-2 
-            rounded hover:bg-gray-100 dark:hover:bg-zinc-600 dark:hover:text-gray-50 cursor-pointer outline-none"
+            rounded hover:bg-gray-100 dark:hover:bg-neutral-600 dark:hover:text-gray-50 cursor-pointer outline-none"
           >
             <CreditCard className="mr-2 h-4 w-4" />
             Billing
