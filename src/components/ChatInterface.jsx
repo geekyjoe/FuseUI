@@ -8,8 +8,16 @@ import React, {
 import ChatTextArea from "./ChatTextArea";
 import BotMessageLoader from "./ui/Loader";
 import BotMessageComponent from "./BotMessageComponent";
-import { BulbOutlined, CodeOutlined, FileImageOutlined, FileTextFilled } from "@ant-design/icons";
-import { ImImage } from "react-icons/im";
+import Logo from "./ui/SLogo";
+import {
+  BulbFilled,
+  BulbOutlined,
+  CodeFilled,
+  CodeOutlined,
+} from "@ant-design/icons";
+import { IoImageOutline, IoImage } from "react-icons/io5";
+import { LuTextQuote } from "react-icons/lu";
+import { TbTextCaption } from "react-icons/tb";
 
 // Custom hook for window height (unchanged)
 const useWindowHeight = () => {
@@ -181,19 +189,52 @@ const BotMessageWithFooter = React.memo(
       }
     }, [isComplete, scrollToBottom]);
 
-    return (
-     <BotMessageComponent
-      displayedText={displayedText}
-      />
-    );
+    return <BotMessageComponent displayedText={displayedText} />;
   }
 );
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
+  const [showChatHeader, setShowChatHeader] = useState(true);
   const windowHeight = useWindowHeight();
   const { botMessages, isLoading, error } = useBotMessages();
   const messagesEndRef = useRef(null);
+  const [hoveredButtons, setHoveredButtons] = useState({});
+
+  const buttons = [
+    {
+      id: "code",
+      label: "Write a Code",
+      icon: { outlined: CodeOutlined, filled: CodeFilled },
+      iconClassName: 'text-zinc-500 dark:text-zinc-300',
+    },
+    {
+      id: "plan",
+      label: "Make a Plan",
+      icon: { outlined: BulbOutlined, filled: BulbFilled },
+      iconClassName: 'text-amber-500',
+    },
+    {
+      id: "image",
+      label: "Generate Image",
+      icon: { outlined: IoImageOutline, filled: IoImage },
+      iconClassName: 'text-green-500',
+    },
+    {
+      id: "pen",
+      label: "Write an Letter",
+      icon: { outlined: TbTextCaption, filled: LuTextQuote },
+      iconClassName: 'text-teal-500',
+    },
+  ];
+
+  const handleMouseEnter = (id) => {
+    setHoveredButtons((prev) => ({ ...prev, [id]: true }));
+  };
+
+  const handleMouseLeave = (id) => {
+    setHoveredButtons((prev) => ({ ...prev, [id]: false }));
+  };
 
   // Improved bot response finding logic
   const findBotResponse = useCallback(
@@ -228,6 +269,11 @@ const ChatInterface = () => {
       if (isLoading) {
         console.warn("Messages are still loading. Please wait.");
         return;
+      }
+
+      // Remove chatHeader when first message is sent
+      if (showChatHeader) {
+        setShowChatHeader(false);
       }
 
       const userMessageWithSender = {
@@ -266,7 +312,7 @@ const ChatInterface = () => {
         }, 5000); // Simulate delay for typing effect
       }
     },
-    [findBotResponse, isLoading, scrollToBottom]
+    [findBotResponse, isLoading, scrollToBottom, showChatHeader]
   );
 
   // Memoize message rendering for performance
@@ -320,32 +366,43 @@ const ChatInterface = () => {
       style={{ height: `${windowHeight}px` }}
     >
       {/* Messages container with scrolling */}
-      <div className="flex-grow overflow-y-auto mr-0.5 px-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
-        <div className="max-w-lg w-5/6 py-2 lg:w-4/5 mx-auto">
-          <div className="flex flex-col gap-2">
-            <div className=" ">
-              <div id="chatHeader" className="row-start-1 flex my-10 justify-center">
-                <h2 className="text-lg dark:text-white text-black">Here lies Logo</h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-1 place-items-center my-10 gap-4">
-                <button className="md:flex md:flex-col h-fit w-40 md:w-fit p-2.5 md:p-2 rounded-full md:rounded-xl border-solid border dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                  <CodeOutlined size={20} className="text-zinc-500 dark:text-zinc-300 p-0.5 md:mb-1" />
-                  <span className="text-sm md:text-left text-center md:m-0 ml-1">Write a Code</span>
-                </button>
-                <button className="md:flex md:flex-col h-fit w-40 md:w-fit p-2.5 md:p-2 rounded-full md:rounded-xl border-solid border dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                  <BulbOutlined size={20} className="text-amber-500 p-0.5 md:mb-1" />
-                  <span className="text-sm md:text-left text-center md:m-0 ml-1">Make a Plan</span>
-                </button>
-                <button className="md:flex md:flex-col h-fit w-40 md:w-fit p-2.5 md:p-2 rounded-full md:rounded-xl border-solid border dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                  <FileImageOutlined size={20} className="text-teal-500 p-0.5 md:mb-1" />
-                  <span className="text-sm md:text-left text-center md:m-0 ml-1">Generate Image</span>
-                </button>
-                <button className="md:flex md:flex-col h-fit w-40 md:w-fit p-2.5 md:p-2 rounded-full md:rounded-xl border-solid border dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-                  <FileTextFilled  size={20} className="text-teal-500 p-0.5 md:mb-1" />
-                  <span className="text-sm md:text-left text-center md:m-0 ml-1">Write an Letter</span>
-                </button>
-              </div>
+      <div className="flex-grow overflow-y-auto mr-0.5 px-0 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+        {showChatHeader && (
+          <div id="chatHeader" className="max-w-2xl w-fit mx-auto my-8">
+            <div className="row-start-1 my-6 place-items-center">
+              <Logo height={50} width={50} className="" />
+              <h2 className="text-xl font-karla dark:text-white text-black mt-5">
+                Hello there, How may I Help You?
+              </h2>
             </div>
+            <div className="flex flex-col md:flex-row place-items-center gap-1 text-neutral-600 dark:text-neutral-300">
+              {buttons.map((button) => {
+                const IconOutlined = button.icon.outlined;
+                const IconFilled = button.icon.filled;
+
+                return (
+                  <button
+                    key={button.id}
+                    className="h-fit w-[170px] md:w-fit text-nowrap text-left p-2 rounded-full border-solid border hover:text-neutral-900 dark:hover:text-neutral-50 dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                    onMouseEnter={() => handleMouseEnter(button.id)}
+                    onMouseLeave={() => handleMouseLeave(button.id)}
+                  >
+                    {hoveredButtons[button.id] ? (
+                      <IconFilled className={`inline-flex p-0.5 h-5 w-5 ${button.iconClassName}`} />
+                    ) : (
+                      <IconOutlined className={`inline-flex p-0.5 h-5 w-5 ${button.iconClassName}`} />
+                    )}
+                    <span className="text-sm p-1 inline-flex">
+                      {button.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        <div className="max-w-xl w-full p-2 md:w-4/5 mx-auto">
+          <div className="flex flex-col gap-2">
             {/* Messages area */}
             {renderedMessages}
             {/* Dummy div to scroll to bottom */}

@@ -90,7 +90,7 @@ const ChatTextArea = ({ onSendMessage }) => {
             className="
                 text-stone-200 
                 bg-stone-800 
-                dark:text-stone-700 
+                dark:text-neutral-600 
                 dark:bg-stone-200 
                 m-0 
                 p-0

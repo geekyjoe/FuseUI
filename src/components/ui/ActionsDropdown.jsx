@@ -17,7 +17,7 @@ const ActionsDropdown = ({ onRename, onDelete }) => {
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="z-50 min-w-[125px] bg-white dark:text-white dark:bg-neutral-800 rounded-md shadow-lg border border-gray-200 dark:border-neutral-700 p-1.5"
+          className="z-50 min-w-[125px] bg-white dark:text-neutral-300 dark:bg-neutral-800 rounded-md shadow-lg border border-gray-200 dark:border-neutral-700 p-1.5"
           sideOffset={5}
           align="start"
         >
@@ -26,7 +26,7 @@ const ActionsDropdown = ({ onRename, onDelete }) => {
               onRename();
               setOpen(false);
             }}
-            className="px-2.5 py-2 flex items-center cursor-pointer dark:hover:text-zinc-100 dark:hover:bg-neutral-600 hover:bg-neutral-100 outline-none focus:bg-gray-100 rounded"
+            className="px-2.5 py-2 flex items-center cursor-pointer dark:hover:text-white dark:hover:bg-neutral-700 hover:bg-neutral-100 outline-none focus:bg-gray-100 rounded"
           >
             <Share className="mr-2 w-4 h-5" />
             Share
@@ -36,7 +36,7 @@ const ActionsDropdown = ({ onRename, onDelete }) => {
               onRename();
               setOpen(false);
             }}
-            className="px-2.5 py-2 flex items-center cursor-pointer dark:hover:text-zinc-100 dark:hover:bg-neutral-600 hover:bg-neutral-100 outline-none focus:bg-gray-100 rounded"
+            className="px-2.5 py-2 flex items-center cursor-pointer dark:hover:text-white dark:hover:bg-neutral-700 hover:bg-neutral-100 outline-none focus:bg-gray-100 rounded"
           >
             <Archive className="mr-2 w-4 h-5" />
             Archive
@@ -46,7 +46,7 @@ const ActionsDropdown = ({ onRename, onDelete }) => {
               onRename();
               setOpen(false);
             }}
-            className="px-2.5 py-2 mb-2 flex items-center cursor-pointer dark:hover:text-zinc-100 dark:hover:bg-neutral-600 hover:bg-neutral-100 outline-none focus:bg-gray-100 rounded"
+            className="px-2.5 py-2 mb-2 flex items-center cursor-pointer dark:hover:text-white dark:hover:bg-neutral-700 hover:bg-neutral-100 outline-none focus:bg-gray-100 rounded"
           >
             <Edit3 className="mr-2 w-4 h-5" />
             Rename
@@ -59,7 +59,7 @@ const ActionsDropdown = ({ onRename, onDelete }) => {
               onDelete(removeSession);
               setOpen(false);
             }}
-            className="px-2.5 py-2 mt-2 flex items-center cursor-pointer dark:hover:text-red-100 dark:text-red-500 dark:hover:bg-red-600 text-red-600 hover:bg-red-50 outline-none focus:bg-red-50 rounded"
+            className="px-2.5 py-2 mt-2 flex items-center cursor-pointer dark:hover:text-red-100 dark:text-rose-600 dark:hover:bg-red-700 text-red-600 hover:bg-red-50 outline-none focus:bg-red-50 rounded"
           >
             <Trash2 className="mr-2 w-4 h-4 " />
             Delete

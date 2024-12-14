@@ -54,7 +54,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, isMobile }) => {
 
         {/* Sidebar Content */}
         <div className="mx-1 font-karla">
-          <ul className="flex gap-1 flex-col overflow-y-auto max-h-[calc(100vh-75px)] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-400 hover:scrollbar-thumb-zinc-600 dark:scrollbar-track-transparent dark:scrollbar-thumb-neutral-600 dark:hover:scrollbar-thumb-neutral-400">
+          <ul className="flex gap-1 flex-col overflow-y-auto max-h-[calc(100vh-60px)] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-400 hover:scrollbar-thumb-zinc-600 dark:scrollbar-track-transparent dark:scrollbar-thumb-neutral-600 dark:hover:scrollbar-thumb-neutral-400">
             {isSidebarOpen &&
               sessions.map((session) => (
                 <>

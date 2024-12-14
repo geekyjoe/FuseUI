@@ -51,7 +51,7 @@ const App = () => {
       {/* Main Content Area */}
       <div className="bg-stone-50 dark:bg-neutral-800 font-inter flex-1 flex flex-col h-screen scrollbar-thin scrollbar-thumb-zinc-600 dark:scrollbar-thumb-neutral-600">
         {/* Header */}
-        <header className="top-0 border-y dark:border-dark-700 p-1.5 flex justify-between items-center">
+        <header className="top-0 mt-2 dark:border-dark-700 p-1.5 flex justify-between items-center">
           <Tooltip content="Open Sidebar" placement="right">
             <button
               onClick={toggleSidebar}
@@ -62,7 +62,7 @@ const App = () => {
               )}
             </button>
           </Tooltip>
-          <div className="ml-12 lg:ml-8">
+          <div className="ml-10 lg:ml-7">
             <h1 className="text-xl font-jost font-semibold text-gray-800 dark:text-gray-100">
               AMA.ai
             </h1>
