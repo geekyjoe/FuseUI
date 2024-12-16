@@ -21,7 +21,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, isMobile }) => {
         className={`
           ${
             isMobile
-              ? `fixed left-0 top-0 bottom-0 z-50 transform transition-transform duration-300 
+              ? `fixed w-2/3 left-0 top-0 bottom-0 z-50 transform transition-transform duration-300 
                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`
               : `${isSidebarOpen ? "w-52" : "w-0"} 
               ease-in-out transition-width duration-300`
