@@ -10,32 +10,33 @@ const Tooltip = ({
   children,
   placement = 'top',
   animation = 'shift-away-subtle',
-  delay = [10, 50],
-  interactive = true,
+  delay = [100, 50],
+  interactive = false,
   arrow = true,
   className = '',
-  contentClassName = '',
+  contentClassName = 'p-0.5 font-jost text-neutral-500 dark:text-neutral-200',
   maxWidth = '250px',
-  offset = [0, 10], // Added offset with default value
+  offset = [0, 10],
+  theme = '', // Added theme prop to handle Tailwind themes
   ...props
 }) => {
-  // Track dark mode state
   const [isDarkMode, setIsDarkMode] = useState(false);
-  // Track screen width
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    const darkModeEnabled = root.classList.contains('dark');
-    setIsDarkMode(darkModeEnabled);
+    const root = document.documentElement;
 
-    const darkModeObserver = new MutationObserver(() => {
+    // Update dark mode state
+    const updateDarkMode = () => {
       setIsDarkMode(root.classList.contains('dark'));
-    });
+    };
 
+    updateDarkMode();
+
+    const darkModeObserver = new MutationObserver(updateDarkMode);
     darkModeObserver.observe(root, { attributes: true, attributeFilter: ['class'] });
 
-    // Handle screen width
+    // Handle screen width updates
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
     };
@@ -48,26 +49,28 @@ const Tooltip = ({
     };
   }, []);
 
-  // Only show tooltip if screen width is 472px or larger
+  // Only render the tooltip if the screen width is 768px or larger
   if (screenWidth < 768) {
     return children;
   }
 
+  const tooltipTheme = theme || (isDarkMode ? 'translucent' : 'light-border');
+
   return (
     <Tippy
-      content={content}
+      content={<span className={`text-sm ${contentClassName}`}>{content}</span>}
       placement={placement}
       animation={animation}
       delay={delay}
-      theme={isDarkMode ? 'translucent' : 'light-border'} // Switch theme
       interactive={interactive}
       arrow={arrow}
       maxWidth={maxWidth}
-      offset={offset} // Added offset prop
-      className={'p-0.5 rounded-md font-jost'}
+      offset={offset}
+      theme={tooltipTheme}
+      className={className}
       {...props}
     >
-      {children}
+      <div className="tooltip-wrapper">{children}</div>
     </Tippy>
   );
 };

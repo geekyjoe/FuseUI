@@ -48,9 +48,9 @@ const ChatTextArea = ({ onSendMessage }) => {
   };
 
   return (
-    <div className="flex flex-col px-2 bottom-0 w-full justify-center dark:bg-neutral-800">
-      <div className="flex bg-stone-200 m-2 dark:bg-neutral-600 w-full sm:w-4/5 lg:w-2/5 p-0.5 rounded-lg mx-auto">
-        <div className="flex w-full">
+    <div className="flex flex-col px-2 bottom-0 w-full justify-center">
+      <div className="flex bg-stone-200 duration-300 m-2 dark:bg-neutral-600 w-full sm:w-4/5 lg:w-2/5 p-0.5 rounded-lg mx-auto">
+        <div className="flex duration-300 w-full">
           <textarea
             ref={textareaRef}
             name="text"
@@ -64,11 +64,12 @@ const ChatTextArea = ({ onSendMessage }) => {
             className="
                 p-4 
                 placeholder:select-none
-                placeholder:text-slate-400 
+                placeholder:text-gray-500 
                 placeholder:dark:text-gray-300 
                 bg-stone-200 
                 dark:bg-neutral-600
                 resize-none 
+                duration-300
                 w-full 
                 border-none 
                 rounded-lg 

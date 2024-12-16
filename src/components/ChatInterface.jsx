@@ -371,11 +371,11 @@ const ChatInterface = () => {
           <div id="chatHeader" className="max-w-2xl w-fit mx-auto my-8">
             <div className="row-start-1 my-6 place-items-center">
               <Logo height={50} width={50} className="" />
-              <h2 className="text-xl font-karla dark:text-white text-black mt-5">
+              <h2 className="text-xl font-karla dark:text-neutral-200 text-black mt-5">
                 Hello there, How may I Help You?
               </h2>
             </div>
-            <div className="flex flex-col md:flex-row place-items-center gap-1 text-neutral-600 dark:text-neutral-300">
+            <div className="flex flex-col md:flex-row md:gap-1 place-items-center gap-2 text-neutral-600 dark:text-neutral-300">
               {buttons.map((button) => {
                 const IconOutlined = button.icon.outlined;
                 const IconFilled = button.icon.filled;
@@ -383,7 +383,7 @@ const ChatInterface = () => {
                 return (
                   <button
                     key={button.id}
-                    className="h-fit w-[170px] md:w-fit text-nowrap text-left p-2 rounded-full border-solid border hover:text-neutral-900 dark:hover:text-neutral-50 dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                    className="h-fit w-[170px] md:w-fit text-nowrap text-left p-2 rounded-full border-solid border hover:text-neutral-900 dark:hover:text-white dark:border-2 dark:border-neutral-600 hover:bg-zinc-100 dark:hover:bg-zinc-700"
                     onMouseEnter={() => handleMouseEnter(button.id)}
                     onMouseLeave={() => handleMouseLeave(button.id)}
                   >
