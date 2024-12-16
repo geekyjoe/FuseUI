@@ -27,7 +27,7 @@ Node.js
 Express (Optional, for building REST APIs)
 
 Components:
-Tailwind CSS Modules (for styling)
+Tailwind CSS/Modules (for styling)
 Radix
 AntD
 
