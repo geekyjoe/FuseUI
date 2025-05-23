@@ -85,7 +85,7 @@ const BotMessageComponent = ({ displayedText }) => {
           <div className="bot-footer pt-2 flex items-center animate-scaleIT">
             <Tooltip content={isCopied ? "Copied" : "Copy"} placement="bottom">
               <div
-                className="msg-opt hover:bg-zinc-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-zinc-700 p-1 mr-1 rounded cursor-pointer"
+                className="msg-opt hover:bg-zinc-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-zinc-700 p-1 mr-1 rounded-sm cursor-pointer"
                 onClick={handleCopyText}
               >
                 {isCopied ? (
@@ -96,12 +96,12 @@ const BotMessageComponent = ({ displayedText }) => {
               </div>
             </Tooltip>
             <Tooltip content="Good Response" placement="bottom">
-              <div className="like-btn hover:bg-zinc-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-zinc-700 mr-1 rounded cursor-pointer">
+              <div className="like-btn hover:bg-zinc-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-zinc-700 mr-1 rounded-sm cursor-pointer">
                 <FeedbackDialog isLike={true} />
               </div>
             </Tooltip>
             <Tooltip content="Bad Response" placement="bottom">
-              <div className="dislike-btn hover:bg-zinc-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-zinc-700 rounded cursor-pointer">
+              <div className="dislike-btn hover:bg-zinc-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-zinc-700 rounded-sm cursor-pointer">
                 <FeedbackDialog isLike={false} />
               </div>
             </Tooltip>

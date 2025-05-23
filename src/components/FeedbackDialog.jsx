@@ -55,9 +55,9 @@ const FeedbackDialog = ({ isLike = true }) => {
       </Dialog.Trigger>
 
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 z-50 backdrop-blur-xs" />
         <Dialog.Content 
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-96 w-full max-w-md overflow-y-auto bg-white dark:bg-gray-700 rounded-lg shadow p-6 z-50"
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-96 w-full max-w-md overflow-y-auto bg-white dark:bg-gray-700 rounded-lg shadow-sm p-6 z-50"
         >
           <div className="flex justify-between items-center mb-4">
             <Dialog.Title className="text-xl font-semibold dark:text-white">
@@ -95,7 +95,7 @@ const FeedbackDialog = ({ isLike = true }) => {
                   placeholder="Please provide more details..."
                   value={customFeedback}
                   onChange={(e) => setCustomFeedback(e.target.value)}
-                  className="w-full p-2 border rounded dark:bg-gray-600 dark:text-white dark:border-gray-600"
+                  className="w-full p-2 border rounded-sm dark:bg-gray-600 dark:text-white dark:border-gray-600"
                   rows={1}
                 />
               </div>

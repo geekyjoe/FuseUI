@@ -25,7 +25,7 @@ const ChatContainer = ({ username }) => {
 
   return (
     <div className="main">
-      <div id="chatContainer" className="flex-grow-0">
+      <div id="chatContainer" className="grow-0">
         <div id="chatbox" className="message_container">
           <div className="logoContainer">
             <div className="logo">

@@ -36,7 +36,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, isMobile }) => {
             <Tooltip content="Close Sidebar" placement="right">
               <button
                 onClick={toggleSidebar}
-                className="text-neutral-600 hover:text-gray-800 dark:text-zinc-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 md:dark:hover:bg-neutral-800 dark:focus:ring-dark-600 p-0.5 hover:bg-zinc-300 focus:outline-none rounded-md"
+                className="text-neutral-600 hover:text-gray-800 dark:text-zinc-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 md:dark:hover:bg-neutral-800 dark:focus:ring-dark-600 p-0.5 hover:bg-zinc-300 focus:outline-hidden rounded-md"
               >
                 <CgSidebarRight size={28} />
               </button>
@@ -44,7 +44,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, isMobile }) => {
             <Tooltip content="New Chat" placement="bottom">
               <button
                 onClick={addSession}
-                className="text-neutral-600 hover:text-gray-800 dark:text-zinc-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 md:dark:hover:bg-neutral-800 dark:focus:ring-dark-600 hover:duration-200 p-0.5 hover:bg-zinc-300 focus:outline-none rounded-md"
+                className="text-neutral-600 hover:text-gray-800 dark:text-zinc-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 md:dark:hover:bg-neutral-800 dark:focus:ring-dark-600 hover:duration-200 p-0.5 hover:bg-zinc-300 focus:outline-hidden rounded-md"
               >
                 <SquarePen size={24} />
               </button>

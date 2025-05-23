@@ -65,7 +65,7 @@ const ChatTextArea = ({ onSendMessage }) => {
                 p-4 
                 placeholder:select-none
                 placeholder:text-gray-500 
-                placeholder:dark:text-gray-300 
+                dark:placeholder:text-gray-300 
                 bg-stone-200 
                 dark:bg-neutral-600
                 resize-none 
@@ -73,7 +73,7 @@ const ChatTextArea = ({ onSendMessage }) => {
                 w-full 
                 border-none 
                 rounded-lg 
-                focus:outline-none 
+                focus:outline-hidden 
                 focus:border-indigo-500 
                 focus:ring-indigo-500 
                 focus:ring-none 

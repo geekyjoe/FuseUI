@@ -45,7 +45,7 @@ const DarkModeToggle = () => {
         className="ml-2 p-1 sm:p-0.5 rounded-full bg-zinc-200 dark:bg-zinc-700 
           text-zinc-800 dark:text-gray-200 
           hover:bg-zinc-300 dark:hover:bg-zinc-600 
-          focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-gray-300"
+          focus:outline-hidden focus:ring-1 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-gray-300"
         aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
       >
         {isDarkMode ? (

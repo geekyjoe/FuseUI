@@ -1,15 +1,43 @@
 import React, { useState, useEffect } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { CgSidebar } from "react-icons/cg";
 import DarkModeToggle from "./components/ui/DarkModeToggle";
 import ChatInterface from "./components/ChatInterface";
 import Sidebar from "./components/Sidebar";
 import Tooltip from "./components/ui/Tooltip";
 import ProfileDropdown from "./components/ui/ProfileDropdown";
+import { AuthProvider, useAuth } from "./api/AuthContext";
+import LoginModal from "./form/Login";
+import User from "./pages/UP";
+
+const Content = () => {
+  return (
+    <>
+    <Routes>
+      <Route path="/" element={<Child />} />
+      <Route path="/profile" element={<User />} />
+    </Routes>
+    </>
+  );
+};
+
+// Main App Component wrapper with AuthProvider
+const AppWrapper = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Content />
+      </Router>
+    </AuthProvider>
+  );
+};
 
 // Main App Component
-const App = () => {
+const Child = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     // Check screen width and set mobile state
@@ -39,6 +67,17 @@ const App = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  useEffect(() => {
+    document.title = "AMA.ai"; // Set the document title
+  }, []);
+
+  // Show login modal if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsLoginModalOpen(true);
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className="flex h-screen overflow-x-hidden">
       {/* Sidebar */}
@@ -55,7 +94,7 @@ const App = () => {
           <Tooltip content="Open Sidebar" placement="right">
             <button
               onClick={toggleSidebar}
-              className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 dark:focus:ring-dark-600 p-0.5 hover:bg-zinc-200 focus:outline-none rounded-md transition-display duration-400"
+              className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 dark:focus:ring-dark-600 p-0.5 hover:bg-zinc-200 focus:outline-hidden rounded-md transition-display duration-400"
             >
               {!isSidebarOpen && <CgSidebar size={24} />}
             </button>
@@ -67,17 +106,44 @@ const App = () => {
           </div>
           <div className="flex p-0.5 items-center">
             <div className="flex rounded-full">
-              <ProfileDropdown />
-              <DarkModeToggle />
+              {isAuthenticated ? (
+                <>
+                  <ProfileDropdown user={user} />
+                  <DarkModeToggle />
+                </>
+              ) : (
+                <Tooltip content="Sign In" placement="bottom">
+                  <button
+                    onClick={() => setIsLoginModalOpen(true)}
+                    className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+                  >
+                    Sign In
+                  </button>
+                </Tooltip>
+              )}
             </div>
           </div>
         </header>
 
         {/* Main Content */}
-        <ChatInterface />
+        {isAuthenticated ? (
+          <ChatInterface />
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-gray-500 dark:text-gray-400">
+              Please sign in to continue
+            </p>
+          </div>
+        )}
       </div>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </div>
   );
 };
 
-export default App;
+export default AppWrapper;

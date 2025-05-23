@@ -18,6 +18,7 @@ import {
 import { IoImageOutline, IoImage } from "react-icons/io5";
 import { LuTextQuote } from "react-icons/lu";
 import { TbTextCaption } from "react-icons/tb";
+import { useAuth } from "../api/AuthContext";
 
 // Custom hook for window height (unchanged)
 const useWindowHeight = () => {
@@ -194,6 +195,7 @@ const BotMessageWithFooter = React.memo(
 );
 
 const ChatInterface = () => {
+  const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [showChatHeader, setShowChatHeader] = useState(true);
   const windowHeight = useWindowHeight();
@@ -323,7 +325,7 @@ const ChatInterface = () => {
           // Render user message
           return (
             <div key={message.id} className="flex justify-end">
-              <div className="bg-stone-600 text-white p-3 rounded-lg max-w-[80%] break-words lg:text-base/7 sm:text-sm/7 shadow-sm">
+              <div className="bg-stone-600 text-white p-3 rounded-lg max-w-[80%] break-words lg:text-base/7 sm:text-sm/7 shadow-xs">
                 {message.text}
               </div>
             </div>
@@ -366,13 +368,13 @@ const ChatInterface = () => {
       style={{ height: `${windowHeight}px` }}
     >
       {/* Messages container with scrolling */}
-      <div className="flex-grow overflow-y-auto mr-0.5 px-0 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+      <div className="grow overflow-y-auto mr-0.5 px-0 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
         {showChatHeader && (
           <div id="chatHeader" className="max-w-2xl w-fit mx-auto my-8">
             <div className="row-start-1 my-6 place-items-center">
               <Logo height={50} width={50} className="" />
               <h2 className="text-xl font-karla dark:text-neutral-200 text-black mt-5">
-                Hello there, How may I Help You?
+                Hello  {user?.firstName} {user?.lastName}, How may I Help You?
               </h2>
             </div>
             <div className="flex flex-col md:flex-row md:gap-1 place-items-center gap-2 text-neutral-600 dark:text-neutral-300">
