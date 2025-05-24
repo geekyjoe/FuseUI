@@ -13,10 +13,10 @@ import User from "./pages/UP";
 const Content = () => {
   return (
     <>
-    <Routes>
-      <Route path="/" element={<Child />} />
-      <Route path="/profile" element={<User />} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Child />} />
+        <Route path="/profile" element={<User />} />
+      </Routes>
     </>
   );
 };
@@ -94,7 +94,9 @@ const Child = () => {
           <Tooltip content="Open Sidebar" placement="right">
             <button
               onClick={toggleSidebar}
-              className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 dark:focus:ring-dark-600 p-0.5 hover:bg-zinc-200 focus:outline-hidden rounded-md transition-display duration-400"
+              className={`text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-neutral-700 dark:focus:ring-dark-600 p-0.5 hover:bg-zinc-200 focus:outline-hidden rounded-md transition-display duration-400 ${
+                isAuthenticated ? "visible" : "invisible"
+              }`}
             >
               {!isSidebarOpen && <CgSidebar size={24} />}
             </button>
@@ -112,14 +114,12 @@ const Child = () => {
                   <DarkModeToggle />
                 </>
               ) : (
-                <Tooltip content="Sign In" placement="bottom">
-                  <button
-                    onClick={() => setIsLoginModalOpen(true)}
-                    className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                  >
-                    Sign In
-                  </button>
-                </Tooltip>
+                <button
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-neutral-700 dark:focus:ring-dark-600 p-2 hover:bg-zinc-200 focus:outline-hidden rounded-md transition-display duration-200"
+                >
+                  Sign In
+                </button>
               )}
             </div>
           </div>

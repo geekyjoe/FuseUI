@@ -18,12 +18,16 @@ import {
   LogIn,
   X,
   Check,
+  AtSign,
+  Lock,
+  User,
 } from "lucide-react";
 // import { AuthService } from "../api/client";
 import Cookies from "js-cookie"; // Make sure to install this package: npm install js-cookie
 import "./Login.css"; // Import your CSS file for styling
 import { GoogleCircleFilled } from "@ant-design/icons";
 import { IoLogoGithub } from "react-icons/io5";
+import { LuSmartphone } from "react-icons/lu";
 
 const LoginModal = ({ isOpen, onClose }) => {
   // States for form mode and steps
@@ -255,7 +259,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           phoneNumber: formData.phoneNumber || null,
           password: formData.password,
         };
-
+        // await new Promise((resolve) => setTimeout(resolve, 20000));
         const response = await register(userData);
 
         if (response.success) {
@@ -333,25 +337,31 @@ const LoginModal = ({ isOpen, onClose }) => {
             )}
 
             <div className="flex relative flex-col space-y-2">
-              <input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
-                  errors.email || authError ? "border-red-500" : ""
-                }`}
-                aria-invalid={errors.email || authError ? "true" : "false"}
-              />
-              <Label
-                htmlFor="email"
-                className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                  errors.email && "text-red-500"
-                }`}
-              >
-                Email
-              </Label>
+              <div className="relative flex items-center">
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
+                    errors.email || authError ? "border-red-500" : ""
+                  }`}
+                  aria-invalid={errors.email || authError ? "true" : "false"}
+                />
+                <AtSign className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
+                <Label
+                  htmlFor="email"
+                  className={`absolute left-5 -top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                    ${
+                      formData.email &&
+                      "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400/75"
+                    }
+                    ${errors.email && "text-red-500"}`}
+                >
+                  Email
+                </Label>
+              </div>
               {errors.email && (
                 <p className="text-xs text-red-500 flex items-center mt-1">
                   <AlertCircle className="h-3 w-3 mr-1" />
@@ -360,59 +370,67 @@ const LoginModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            <div className="flex flex-col space-y-2">
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500
+            <div className="">
+              <div className="relative flex flex-col space-y-2">
+                <div className="relative flex items-center">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500
                     ${
                       errors.password || authError
-                        ? "border-red-500 pr-10"
-                        : "pr-10"
+                        ? "border-red-500 pr-8"
+                        : "pr-8"
                     }
                   `}
-                  aria-invalid={errors.password || authError ? "true" : "false"}
-                />
-                <Tooltip.Provider>
-                  <Tooltip.Root>
-                    <Tooltip.Trigger asChild>
-                      <button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-0 p-2 top-1/2 -translate-y-1/2 hover:bg-transparent"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-gray-500" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-gray-500" />
-                        )}
-                      </button>
-                    </Tooltip.Trigger>
-                    <Tooltip.Portal>
-                      <Tooltip.Content
-                        className="z-50 bg-gray-900 text-white px-2 py-1 rounded text-sm"
-                        sideOffset={5}
-                      >
-                        {showPassword ? "Hide password" : "Show password"}
-                        <Tooltip.Arrow className="fill-gray-900" />
-                      </Tooltip.Content>
-                    </Tooltip.Portal>
-                  </Tooltip.Root>
-                </Tooltip.Provider>
-                <Label
-                  htmlFor="password"
-                  className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                    errors.password ? "text-red-500" : ""
-                  }`}
-                >
-                  Password
-                </Label>
+                    aria-invalid={
+                      errors.password || authError ? "true" : "false"
+                    }
+                  />
+                  <Lock className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
+                  <Tooltip.Provider>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger asChild>
+                        <button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="absolute right-0 p-2 top-1/2 -translate-y-1/2 hover:bg-transparent"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4 text-gray-500" />
+                          ) : (
+                            <Eye className="h-4 w-4 text-gray-500" />
+                          )}
+                        </button>
+                      </Tooltip.Trigger>
+                      <Tooltip.Portal>
+                        <Tooltip.Content
+                          className="z-50 bg-gray-900 text-white px-2 py-1 rounded text-sm"
+                          sideOffset={5}
+                        >
+                          {showPassword ? "Hide password" : "Show password"}
+                          <Tooltip.Arrow className="fill-gray-900" />
+                        </Tooltip.Content>
+                      </Tooltip.Portal>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
+                  <Label
+                    htmlFor="password"
+                    className={`absolute left-5 -top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                        ${
+                          formData.password &&
+                          "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400"
+                        }
+                      ${errors.password ? "text-red-500" : ""}`}
+                  >
+                    Password
+                  </Label>
+                </div>
               </div>
               {errors.password && (
                 <p className="text-xs text-red-500 flex items-center mt-1">
@@ -429,7 +447,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 onCheckedChange={(checked) =>
                   setFormData({ ...formData, rememberMe: checked })
                 }
-                className="flex h-4 w-4 appearance-none items-center justify-center rounded border border-gray-300 bg-white data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 "
+                className="flex h-4 w-4 appearance-none items-center justify-center rounded border border-gray-300 bg-white data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 outline-none hover:ring-2 hover:ring-indigo-500 hover:ring-offset-1 "
               >
                 <Checkbox.Indicator className="text-white">
                   <Check className="h-3 w-3" />
@@ -452,7 +470,6 @@ const LoginModal = ({ isOpen, onClose }) => {
               }`}
               disabled={isLoading}
             >
-              <span className="rounded-2xl -z-1 absolute -inset-0 block translate-x-1 translate-y-1.5 duration-200 group-hover:translate-0 bg-black/80" />
               {isLoading ? (
                 <div className="flex items-center justify-center gap-2 ">
                   <div className="typing-indicator">
@@ -466,6 +483,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-2">
+                  <span className="rounded-2xl -z-1 absolute inset-0 block translate-x-1 translate-y-1.5 duration-200 group-hover:translate-0 bg-black/80" />
                   <LogIn className="w-4 h-4" />
                   Login
                 </div>
@@ -542,23 +560,27 @@ const LoginModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <div className="relative">
+            <div className="relative flex items-center">
               <input
                 id="username"
                 type="text"
                 placeholder="Choose a username"
                 value={formData.username}
                 onChange={handleChange}
-                className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
+                className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
                   errors.username ? "border-red-500" : ""
                 }`}
                 aria-invalid={errors.username ? "true" : "false"}
               />
+              <User className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
               <Label
                 htmlFor="username"
-                className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                  errors.username ? "text-red-500" : ""
-                }`}
+                className={`absolute left-5 -top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                    ${
+                      formData.username &&
+                      "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400/75"
+                    }
+                  ${errors.username ? "text-red-500" : ""}`}
               >
                 Username
               </Label>
@@ -593,23 +615,27 @@ const LoginModal = ({ isOpen, onClose }) => {
               </div>
             )}
 
-            <div className="relative">
+            <div className="relative flex items-center">
               <input
                 id="email"
                 type="email"
                 placeholder="Enter your email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
+                className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500  ${
                   errors.email ? "border-red-500" : ""
                 }`}
                 aria-invalid={errors.email ? "true" : "false"}
               />
+              <AtSign className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
               <Label
                 htmlFor="email"
-                className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                  errors.email ? "text-red-500" : ""
-                }`}
+                className={`absolute left-5 -top-4 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                    ${
+                      formData.email &&
+                      "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400/75"
+                    }
+                  ${errors.email ? "text-red-500" : ""}`}
               >
                 Email
               </Label>
@@ -621,23 +647,27 @@ const LoginModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            <div className="relative">
+            <div className="relative flex items-center">
               <input
                 id="phoneNumber"
                 type="tel"
                 placeholder="Enter your phone number"
                 value={formData.phoneNumber}
                 onChange={formatPhoneNumber}
-                className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
+                className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
                   errors.phoneNumber ? "border-red-500" : ""
                 }`}
                 aria-invalid={errors.phoneNumber ? "true" : "false"}
               />
+              <LuSmartphone className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
               <Label
                 htmlFor="phoneNumber"
-                className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                  errors.phoneNumber ? "text-red-500" : ""
-                }`}
+                className={`absolute left-5 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                    ${
+                      formData.phoneNumber &&
+                      "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400/75"
+                    }
+                  ${errors.phoneNumber ? "text-red-500" : ""}`}
               >
                 Phone Number (Optional)
               </Label>
@@ -688,23 +718,27 @@ const LoginModal = ({ isOpen, onClose }) => {
               )}
 
               <div className="relative">
-                <div className="relative">
+                <div className="relative flex items-center">
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${`
+                    className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${`
                       errors.password ? "border-red-500 pr-10" : "pr-10"
                     `}`}
                     aria-invalid={errors.password ? "true" : "false"}
                   />
+                  <Lock className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
                   <Label
                     htmlFor="password"
-                    className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                      errors.password ? "text-red-500" : ""
-                    }`}
+                    className={`absolute left-5 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                    ${
+                      formData.password &&
+                      "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400/75"
+                    }
+                      ${errors.password ? "text-red-500" : ""}`}
                   >
                     Password
                   </Label>
@@ -747,23 +781,27 @@ const LoginModal = ({ isOpen, onClose }) => {
               </div>
 
               <div className="relative">
-                <div className="relative">
+                <div className="relative flex items-center">
                   <input
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm your password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className={`peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
+                    className={`peer h-10 w-full pl-5 border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-indigo-500 ${
                       errors.confirmPassword ? "border-red-500 pr-10" : "pr-10"
                     }`}
                     aria-invalid={errors.confirmPassword ? "true" : "false"}
                   />
+                  <Lock className="absolute left-0 h-4 w-4 text-gray-400 peer-focus:text-indigo-500" />
                   <Label
                     htmlFor="confirmPassword"
-                    className={`absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-indigo-500 peer-focus:text-sm ${
-                      errors.confirmPassword ? "text-red-500" : ""
-                    }`}
+                    className={`absolute left-5 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:left-0 peer-focus:text-indigo-500 peer-focus:text-sm 
+                    ${
+                      formData.confirmPassword &&
+                      "peer-not-placeholder-shown:left-0 peer-focus:border-b peer-focus:border-indigo-500 peer-not-placeholder-shown:border-b peer-not-placeholder-shown:border-gray-400/75"
+                    }
+                      ${errors.confirmPassword ? "text-red-500" : ""}`}
                   >
                     Confirm Password
                   </Label>
@@ -814,7 +852,9 @@ const LoginModal = ({ isOpen, onClose }) => {
                   type="button"
                   onClick={prevStep}
                   variant="outline"
-                  className={`w-1/2 text-white bg-indigo-500 hover:bg-indigo-600 p-2 rounded-2xl transition duration-200 ease-in-out relative group ${isLoading && 'hidden'}`}
+                  className={`w-1/2 text-white bg-indigo-500 hover:bg-indigo-600 p-2 rounded-2xl transition duration-200 ease-in-out relative group ${
+                    isLoading && "hidden"
+                  }`}
                 >
                   <span className="rounded-2xl -z-1 absolute -inset-0 block translate-x-1 translate-y-1.5 duration-200 group-hover:translate-0 bg-black/80" />
                   <div className="flex items-center justify-center gap-2">
@@ -822,8 +862,18 @@ const LoginModal = ({ isOpen, onClose }) => {
                     Back
                   </div>
                 </button>
-                <button type="submit" className={`flex-1 text-white bg-indigo-500 hover:bg-indigo-600 p-2 rounded-2xl transition duration-200 ease-in-out relative group ${isLoading && 'bg-transparent hover:bg-transparent'}`} disabled={isLoading}>
-                <span className={`rounded-2xl -z-1 absolute -inset-0 block translate-x-1 translate-y-1.5 duration-200 group-hover:translate-0 bg-black/80 ${isLoading && 'bg-transparent'}`} />
+                <button
+                  type="submit"
+                  className={`flex-1 text-white bg-indigo-500 hover:bg-indigo-600 p-2 rounded-2xl transition duration-200 ease-in-out relative group ${
+                    isLoading && "bg-transparent hover:bg-transparent"
+                  }`}
+                  disabled={isLoading}
+                >
+                  <span
+                    className={`rounded-2xl -z-1 absolute -inset-0 block translate-x-1 translate-y-1.5 duration-200 group-hover:translate-0 bg-black/80 ${
+                      isLoading && "bg-transparent"
+                    }`}
+                  />
                   {isLoading ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="typing-indicator">
@@ -858,10 +908,10 @@ const LoginModal = ({ isOpen, onClose }) => {
           <div className="p-0 overflow-hidden rounded-lg">
             {/* Card Header */}
             <div className="p-6 pb-4 relative">
-              <Dialog.Title className="text-lg font-semibold leading-none tracking-tight">
+              <Dialog.Title className="text-lg font-semibold leading-7 tracking-tight">
                 {mode === "login" ? "Welcome Back" : "Create Account"}
               </Dialog.Title>
-              <Dialog.Description className="text-sm text-muted-foreground mt-1">
+              <Dialog.Description className="text-sm text-muted-foreground leading-6 mt-1">
                 {mode === "login"
                   ? "Enter your credentials to access your account"
                   : `Step ${currentStep} of 3: ${
@@ -875,7 +925,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Card Content */}
-            <div className="px-6 pb-6 space-y-4">
+            <div className="px-6 pb-6 flex flex-col space-y-2">
               <div className="grid grid-cols-2 gap-4">
                 <button
                   type="button"
@@ -907,7 +957,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 </button>
               </div>
 
-              <div className="relative">
+              <div className="relative mt-4 mb-6">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
                 </div>
@@ -927,7 +977,10 @@ const LoginModal = ({ isOpen, onClose }) => {
                 {mode === "login"
                   ? "Don't have an account? "
                   : "Already have an account? "}
-                <button variant="link" className="p-0" onClick={toggleMode}>
+                <button
+                  className="p-1 text-indigo-600 hover:underline hover:underline-offset-2 "
+                  onClick={toggleMode}
+                >
                   {mode === "login" ? "Sign Up" : "Login"}
                 </button>
               </p>

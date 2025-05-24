@@ -1,6 +1,6 @@
 // url.js - Base URL configuration
 const config = {
-  development: 'http://192.168.1.8:6969', // Replace with your development API URL
+  development: 'http://192.168.1.7:6969', // Replace with your development API URL
   production: 'https://your-api-domain.com', // Replace with your production API URL
   staging: 'https://staging-api-domain.com'  // Replace with your staging API URL
 };
