@@ -51,6 +51,8 @@ const Profile = () => {
     email: "",
     phoneNumber: "",
     username: "",
+    dob: "",
+    address: "",
   });
   const [tempProfile, setTempProfile] = useState({ ...userProfile });
   const [notifications, setNotifications] = useState({
@@ -89,9 +91,10 @@ const Profile = () => {
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    document.title = "Profile - TJB Store";
+    document.title = "Profile";
   }, []);
 
+  // Update the useEffect that sets user profile data
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/");
@@ -99,31 +102,77 @@ const Profile = () => {
     }
 
     if (user) {
+      // Store user data in localStorage to persist it
+      localStorage.setItem("user", JSON.stringify(user));
+
       setUserRole(user.role || "user");
 
       // Set user profile data
       const names = user.displayName ? user.displayName.split(" ") : ["", ""];
-      const firstName = names[0] || user.firstName || "";
-      const lastName = names.slice(1).join(" ") || user.lastName || "";
+      const firstName = user.firstName || names[0] || "";
+      const lastName = user.lastName || names.slice(1).join(" ") || "";
 
+      // Handle DOB with better format checking
+      let formattedDob = "";
+      if (user.dob || user.dateOfBirth) {
+        const dobValue = user.dob || user.dateOfBirth;
+        try {
+          // If already in YYYY-MM-DD format
+          if (/^\d{4}-\d{2}-\d{2}$/.test(dobValue)) {
+            formattedDob = dobValue;
+          } else {
+            // Try to parse other date formats
+            const date = new Date(dobValue);
+            if (!isNaN(date.getTime())) {
+              formattedDob = date.toISOString().split("T")[0];
+            }
+          }
+        } catch (error) {
+          console.warn("Invalid date format for DOB:", dobValue);
+          formattedDob = "";
+        }
+      }
+
+      // Create profile data with fallbacks
       const profileData = {
-        firstName,
-        lastName,
+        firstName: firstName || user.firstName || "",
+        lastName: lastName || user.lastName || "",
         email: user.email || "",
-        phoneNumber: user.phoneNumber || "",
+        phoneNumber: user.phoneNumber || user.phone || "",
         username: user.username || user.email?.split("@")[0] || "",
+        dob: formattedDob,
+        address: user.address || user.streetAddress || "",
       };
 
+      // Update state and persist in localStorage
       setUserProfile(profileData);
       setTempProfile(profileData);
+      localStorage.setItem("userProfile", JSON.stringify(profileData));
 
       // Load cookie preferences
       const savedPreferences = getCookie("cookiePreferences");
       if (savedPreferences) {
         setCookiePreferences(savedPreferences);
       }
+    } else {
+      // Try to load from localStorage if user object is not available
+      const storedProfile = localStorage.getItem("userProfile");
+      if (storedProfile) {
+        const parsedProfile = JSON.parse(storedProfile);
+        setUserProfile(parsedProfile);
+        setTempProfile(parsedProfile);
+      }
     }
   }, [user, isAuthenticated, navigate]);
+
+  // Add this useEffect for cleanup
+  useEffect(() => {
+    return () => {
+      // Cleanup function
+      const currentProfile = JSON.stringify(userProfile);
+      localStorage.setItem("userProfile", currentProfile);
+    };
+  }, [userProfile]);
 
   // Fetch all users for admin panel
   const fetchAllUsers = async () => {
@@ -180,18 +229,57 @@ const Profile = () => {
     setTempProfile((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Improved handleFieldSave function
   const handleFieldSave = async (field) => {
     try {
       if (!user || !user.id) {
         throw new Error("User not authenticated");
       }
 
-      const updateData = { [field]: tempProfile[field] };
+      // Validate the field value before sending
+      const fieldValue = tempProfile[field];
+      if (
+        fieldValue === undefined ||
+        fieldValue === null ||
+        fieldValue === ""
+      ) {
+        throw new Error(`${field} cannot be empty`);
+      }
+
+      // Show loading state
+      setEditingField(null); // Or set a loading state
+      showToast("Updating...", `Updating your ${field}...`, "info");
+
+      // Prepare update data
+      const updateData = { [field]: fieldValue };
+
+      // Add current password if updating sensitive fields
+      if (field === "password" || field === "email") {
+        const currentPassword = prompt(
+          "Please enter your current password to confirm this change:"
+        );
+        if (!currentPassword) {
+          throw new Error("Current password is required for this change");
+        }
+        updateData.currentPassword = currentPassword;
+      }
+
+      // console.log("Sending update data:", updateData); // Debug log
+
+      // Call the update function
       const response = await updateUser(user.id, updateData);
 
       if (response.success) {
-        setUserProfile((prev) => ({ ...prev, [field]: tempProfile[field] }));
-        setEditingField(null);
+        // Update local state with the new value
+        setUserProfile((prev) => ({
+          ...prev,
+          [field]: fieldValue,
+          updatedAt: new Date().toISOString(), // Add timestamp
+        }));
+
+        // Clear temporary profile data for this field
+        setTempProfile((prev) => ({ ...prev, [field]: "" }));
+
         showToast(
           "Profile Updated",
           `Your ${field} has been updated successfully`,
@@ -207,6 +295,9 @@ const Profile = () => {
         error.message || `Failed to update ${field}`,
         "error"
       );
+
+      // Revert the editing state on error
+      setEditingField(field);
     }
   };
 
@@ -635,22 +726,25 @@ const Profile = () => {
                 </h3>
                 <div className="space-y-4 max-w-2xl">
                   {Object.entries({
-                    firstName: "First Name",
-                    lastName: "Last Name",
-                    phoneNumber: "Phone Number",
-                    username: "Username",
-                  }).map(([field, label]) => (
+                    firstName: { label: "First Name", type: "text" },
+                    lastName: { label: "Last Name", type: "text" },
+                    phoneNumber: { label: "Phone Number", type: "tel" },
+                    username: { label: "Username", type: "text" },
+                    dob: { label: "Date of Birth", type: "date" },
+                    address: { label: "Address", type: "text" },
+                  }).map(([field, { label, type }]) => (
                     <div key={field} className="space-y-2">
-                      <label htmlFor={field} className="font-medium">
+                      <label htmlFor={field} className="font-medium leading-7">
                         {label}
                       </label>
-                      <div className="flex gap-2">
+                      <div className="flex gap-3">
                         <input
                           id={field}
+                          type={type}
                           value={
                             editingField === field
-                              ? tempProfile[field]
-                              : userProfile[field]
+                              ? tempProfile[field] || ""
+                              : userProfile[field] || ""
                           }
                           onChange={(e) =>
                             handleFieldEdit(field, e.target.value)
@@ -668,7 +762,13 @@ const Profile = () => {
                               <Save className="h-4 w-4" />
                             </button>
                             <button
-                              onClick={() => setEditingField(null)}
+                              onClick={() => {
+                                setEditingField(null);
+                                setTempProfile((prev) => ({
+                                  ...prev,
+                                  [field]: userProfile[field],
+                                }));
+                              }}
                               className="px-3 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
                             >
                               <X className="h-4 w-4" />

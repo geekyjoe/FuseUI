@@ -9,6 +9,7 @@ import ProfileDropdown from "./components/ui/ProfileDropdown";
 import { AuthProvider, useAuth } from "./api/AuthContext";
 import LoginModal from "./form/Login";
 import User from "./pages/UP";
+import "./App.css";
 
 const Content = () => {
   return (
@@ -37,7 +38,7 @@ const Child = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
 
   useEffect(() => {
     // Check screen width and set mobile state
@@ -77,6 +78,36 @@ const Child = () => {
       setIsLoginModalOpen(true);
     }
   }, [isAuthenticated]);
+
+  // Add loading state UI
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-stone-50 dark:bg-neutral-800">
+        <div
+          aria-label="Orange and tan hamster running in a metal wheel"
+          role="img"
+          className="wheel-and-hamster"
+        >
+          <div className="wheel"></div>
+          <div className="hamster">
+            <div className="hamster__body">
+              <div className="hamster__head">
+                <div className="hamster__ear"></div>
+                <div className="hamster__eye"></div>
+                <div className="hamster__nose"></div>
+              </div>
+              <div className="hamster__limb hamster__limb--fr"></div>
+              <div className="hamster__limb hamster__limb--fl"></div>
+              <div className="hamster__limb hamster__limb--br"></div>
+              <div className="hamster__limb hamster__limb--bl"></div>
+              <div className="hamster__tail"></div>
+            </div>
+          </div>
+          <div className="spoke"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-x-hidden">
